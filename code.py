@@ -38,7 +38,31 @@ stats.ttest_ind(df['FSIQ'], df['PIQ'])
 stats.ttest_rel(df['FSIQ'], df['PIQ'])
 stats.ttest_1samp(df['FSIQ'] - df['PIQ'], 0) 
 
+#Comparison between IQ of male and female using a linear model
+model = ols("VIQ ~ Gender + 1", df).fit()
+print(model.summary())
+
 #statsmodels
 model = ols('VIQ ~ Gender + MRI_Count + Height', df).fit()
 print(model.summary())
 
+#simple linear regression
+x = np.linspace(-5, 5, 20)
+np.random.seed(1)
+y = -5 + 3*x + 4 * np.random.normal(size=x.shape)
+data = pd.DataFrame({'x': x, 'y': y})
+
+from statsmodels.formula.api import ols
+model = ols("y ~ x", data).fit()
+
+print(model.summary())
+
+#Multiple Regression
+data = pd.read_csv('data/iris.csv')
+model = ols('sepal_width ~ name + petal_length', data).fit()
+print(model.summary())  
+
+#Pairplot
+import seaborn
+seaborn.pairplot(data, vars=['WAGE', 'AGE', 'EDUCATION'],
+                 kind='reg')  
